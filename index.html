@@ -171,70 +171,39 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
-        .slideshow-container {
+        .children-inputs {
             margin: 20px 0;
-            text-align: center;
         }
 
-        .slideshow-photo {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .slideshow-photo img {
-            width: 300px;
-            height: 300px;
-            border-radius: 15px;
-            object-fit: cover;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            transition: all 0.5s ease;
-        }
-
-        .slideshow-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
+        .child-input {
             margin: 15px 0;
+            text-align: left;
         }
 
-        .slideshow-btn {
-            background: linear-gradient(45deg, #74b9ff, #0984e3);
-            padding: 8px 15px;
-            font-size: 0.9em;
-        }
-
-        .photo-counter {
-            background: rgba(0,0,0,0.1);
-            padding: 5px 12px;
-            border-radius: 15px;
+        .child-input label {
+            display: block;
+            color: #555;
             font-weight: bold;
-            color: #333;
+            margin-bottom: 5px;
+            font-size: 1em;
         }
 
-        .slideshow-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 10px 0;
+        .child-input input {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            font-size: 1em;
+            width: 100%;
+            transition: border-color 0.3s ease;
         }
 
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .child-input input:focus {
+            outline: none;
+            border-color: #ff6b6b;
         }
 
-        .indicator.active {
-            background: #ff6b6b;
-            transform: scale(1.2);
-        }
-
-        .indicator:hover {
-            background: #74b9ff;
+        .question-photo {
+            margin: 15px 0;
         }
 
         .video-section {
@@ -312,8 +281,14 @@
         <!-- Екран 2: Перша загадка -->
         <div class="screen" id="screen2">
             <div class="progress">
-                <div class="progress-bar" style="width: 25%;"></div>
+                <div class="progress-bar" style="width: 33%;"></div>
             </div>
+            
+            <!-- Фото для першого питання -->
+            <div class="question-photo">
+                <img src="./photo1.jpg" alt="Наше фото 1" style="width: 200px; height: 200px; border-radius: 15px; object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.15); margin-bottom: 20px;">
+            </div>
+            
             <h2>Загадка №1</h2>
             <p>🐷 Як звати нашого головного поросятка?</p>
             <div class="input-group">
@@ -326,8 +301,14 @@
         <!-- Екран 3: Друга загадка -->
         <div class="screen" id="screen3">
             <div class="progress">
-                <div class="progress-bar" style="width: 50%;"></div>
+                <div class="progress-bar" style="width: 66%;"></div>
             </div>
+            
+            <!-- Фото для другого питання -->
+            <div class="question-photo">
+                <img src="./photo2.jpg" alt="Наше фото 2" style="width: 200px; height: 200px; border-radius: 15px; object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.15); margin-bottom: 20px;">
+            </div>
+            
             <h2>Загадка №2</h2>
             <p>📅 В якому місяці ми вперше зустрілися?</p>
             <div class="input-group">
@@ -340,64 +321,42 @@
         <!-- Екран 4: Третя загадка -->
         <div class="screen" id="screen4">
             <div class="progress">
-                <div class="progress-bar" style="width: 75%;"></div>
+                <div class="progress-bar" style="width: 100%;"></div>
             </div>
+            
+            <!-- Фото для третього питання -->
+            <div class="question-photo">
+                <img src="./photo3.jpg" alt="Наше фото 3" style="width: 200px; height: 200px; border-radius: 15px; object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.15); margin-bottom: 20px;">
+            </div>
+            
             <h2>Загадка №3</h2>
-            <p>💑 Як я тебе ласкаво називаю вдома?</p>
-            <div class="input-group">
-                <input type="text" id="answer3" placeholder="Моє улюблене прізвисько для тебе">
+            <p>👶👧🧒👦 Як звати наших дітей від найменшого до найстаршого?</p>
+            
+            <div class="children-inputs">
+                <div class="child-input">
+                    <label>1. Найменший:</label>
+                    <input type="text" id="child1" placeholder="Ім'я найменшого">
+                </div>
+                <div class="child-input">
+                    <label>2. Другий:</label>
+                    <input type="text" id="child2" placeholder="Ім'я другого">
+                </div>
+                <div class="child-input">
+                    <label>3. Третій:</label>
+                    <input type="text" id="child3" placeholder="Ім'я третього">
+                </div>
+                <div class="child-input">
+                    <label>4. Найстарший:</label>
+                    <input type="text" id="child4" placeholder="Ім'я найстаршого">
+                </div>
             </div>
-            <button class="btn" onclick="checkAnswer(3)">Відповісти</button>
+            
+            <button class="btn" onclick="checkChildrenAnswer()">Відповісти</button>
             <div id="error3" class="error"></div>
         </div>
 
-        <!-- Екран 5: Четверта загадка -->
+        <!-- Екран 5: Привітання -->
         <div class="screen" id="screen5">
-            <div class="progress">
-                <div class="progress-bar" style="width: 85%;"></div>
-            </div>
-            <h2>Загадка №4</h2>
-            <p>🍰 Який твій улюблений смак торта?</p>
-            <div class="input-group">
-                <input type="text" id="answer4" placeholder="Твій улюблений смак">
-            </div>
-            <button class="btn" onclick="checkAnswer(4)">Відповісти</button>
-            <div id="error4" class="error"></div>
-        </div>
-
-        <!-- Екран 6: Слайд-шоу фотографій -->
-        <div class="screen" id="screen6">
-            <div class="progress">
-                <div class="progress-bar" style="width: 95%;"></div>
-            </div>
-            <h2>Наші спогади ❤️</h2>
-            
-            <div class="slideshow-container">
-                <div class="slideshow-photo">
-                    <img id="slideshowImage" src="" alt="Наші фото" onerror="handleSlideshowError(this)" />
-                    <div id="slideshow-status" class="photo-status">Завантажуємо фото...</div>
-                </div>
-                
-                <div class="slideshow-controls">
-                    <button class="btn slideshow-btn" onclick="prevPhoto()">← Попереднє</button>
-                    <div class="photo-counter">
-                        <span id="current-photo">1</span> / <span id="total-photos">3</span>
-                    </div>
-                    <button class="btn slideshow-btn" onclick="nextPhoto()">Наступне →</button>
-                </div>
-                
-                <div class="slideshow-indicators">
-                    <span class="indicator active" onclick="goToPhoto(0)"></span>
-                    <span class="indicator" onclick="goToPhoto(1)"></span>
-                    <span class="indicator" onclick="goToPhoto(2)"></span>
-                </div>
-            </div>
-            
-            <button class="btn" onclick="nextScreen()" style="margin-top: 20px;">Далі до привітання 💕</button>
-        </div>
-
-        <!-- Екран 7: Привітання -->
-        <div class="screen" id="screen7">
             <div class="progress">
                 <div class="progress-bar" style="width: 100%;"></div>
             </div>
@@ -431,8 +390,7 @@
         const answers = {
             1: "коко", // Ім'я поросятка
             2: "лютий", // Місяць знайомства
-            3: "жопка", // Ласкаве прізвисько
-            4: "шоколадний" // Улюблений смак торта
+            3: ["макар", "марфа", "богдан", "злата"] // Імена дітей від найменшого до найстаршого
         };
 
         // Ваші фотографії з GitHub
@@ -449,65 +407,50 @@
             document.getElementById(`screen${currentScreen}`).classList.remove('active');
             currentScreen++;
             document.getElementById(`screen${currentScreen}`).classList.add('active');
+        }
+
+        function checkChildrenAnswer() {
+            const child1 = document.getElementById('child1').value.toLowerCase().trim();
+            const child2 = document.getElementById('child2').value.toLowerCase().trim();
+            const child3 = document.getElementById('child3').value.toLowerCase().trim();
+            const child4 = document.getElementById('child4').value.toLowerCase().trim();
             
-            // Запустити слайд-шоу при переході до екрана 6
-            if (currentScreen === 6) {
-                startSlideshow();
+            const userAnswers = [child1, child2, child3, child4];
+            const correctAnswers = answers[3];
+            const errorElement = document.getElementById('error3');
+            
+            // Перевірити, чи всі відповіді правильні
+            let allCorrect = true;
+            for (let i = 0; i < 4; i++) {
+                if (userAnswers[i] !== correctAnswers[i]) {
+                    allCorrect = false;
+                    break;
+                }
             }
-        }
-
-        function startSlideshow() {
-            currentPhotoIndex = 0;
-            showSlideshowPhoto();
-            document.getElementById('total-photos').textContent = photos.length;
-        }
-
-        function showSlideshowPhoto() {
-            const img = document.getElementById('slideshowImage');
-            const status = document.getElementById('slideshow-status');
-            const currentCounter = document.getElementById('current-photo');
             
-            // Оновити лічильник
-            currentCounter.textContent = currentPhotoIndex + 1;
-            
-            // Оновити індикатори
-            document.querySelectorAll('.indicator').forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentPhotoIndex);
-            });
-            
-            // Показати статус завантаження
-            status.textContent = 'Завантажуємо фото...';
-            status.className = 'photo-status loading';
-            
-            // Завантажити фото з GitHub
-            img.src = photos[currentPhotoIndex];
-        }
-
-        function nextPhoto() {
-            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
-            showSlideshowPhoto();
-        }
-
-        function prevPhoto() {
-            currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
-            showSlideshowPhoto();
-        }
-
-        function goToPhoto(index) {
-            currentPhotoIndex = index;
-            showSlideshowPhoto();
-        }
-
-        function handleSlideshowError(img) {
-            const status = document.getElementById('slideshow-status');
-            
-            // Если фото не загрузилось с GitHub
-            status.textContent = 'Фото завантажується...';
-            status.className = 'photo-status error';
-            
-            setTimeout(() => {
-                status.style.display = 'none';
-            }, 2000);
+            if (allCorrect) {
+                errorElement.textContent = "";
+                errorElement.className = "success";
+                errorElement.textContent = "Правильно! Наша чудова сім'я! ❤️";
+                
+                setTimeout(() => {
+                    // Запускаємо конфеті після останнього питання
+                    createConfetti();
+                    nextScreen();
+                }, 1500);
+            } else {
+                errorElement.className = "error";
+                errorElement.textContent = "Спробуй ще раз. Пам'ятай порядок: від найменшого до найстаршого 😊";
+                
+                // Встряхивание всех полей ввода
+                ['child1', 'child2', 'child3', 'child4'].forEach(id => {
+                    const input = document.getElementById(id);
+                    input.style.animation = "shake 0.5s";
+                    setTimeout(() => {
+                        input.style.animation = "";
+                    }, 500);
+                });
+            }
         }
 
         function playVideo() {
@@ -549,10 +492,6 @@
                 errorElement.textContent = "Правильно! ❤️";
                 
                 setTimeout(() => {
-                    if (questionNumber === 4) {
-                        // Останнє питання - запускаємо конфеті
-                        createConfetti();
-                    }
                     nextScreen();
                 }, 1500);
             } else {
@@ -620,24 +559,15 @@
             if (e.key === 'Enter') {
                 const currentInput = document.activeElement;
                 if (currentInput.type === 'text') {
-                    const questionNumber = currentInput.id.replace('answer', '');
-                    checkAnswer(parseInt(questionNumber));
+                    if (currentInput.id.startsWith('child')) {
+                        // Если это поле с именем ребенка, проверяем все имена
+                        checkChildrenAnswer();
+                    } else {
+                        // Обычный вопрос
+                        const questionNumber = currentInput.id.replace('answer', '');
+                        checkAnswer(parseInt(questionNumber));
+                    }
                 }
-            }
-        });
-
-        // Обработчик для загрузки фото в слайд-шоу
-        document.addEventListener('DOMContentLoaded', function() {
-            const slideshowImg = document.getElementById('slideshowImage');
-            if (slideshowImg) {
-                slideshowImg.addEventListener('load', function() {
-                    const status = document.getElementById('slideshow-status');
-                    if (status) status.style.display = 'none';
-                });
-                
-                slideshowImg.addEventListener('error', function() {
-                    handleSlideshowError(this);
-                });
             }
         });
     </script>
