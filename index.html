@@ -1,1 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днем Рождения, дорогая!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            padding: 40px 30px;
+            text-align: center;
+            min-height: 400px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 20px;
+            animation: float 3s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 1em;
+            width: 100%;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .gift-box {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .message-card {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .photo-placeholder {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: #27ae60;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <!-- Экран 1: Приветствие -->
+        <div class="screen active" id="screen1">
+            <div class="gift-box">🎁</div>
+            <h1>С Днем Рождения!</h1>
+            <p>Дорогая моя, сегодня твой особенный день, и я приготовил для тебя небольшой сюрприз!</p>
+            <p>Пройди этот квест, чтобы получить все мои поздравления ❤️</p>
+            <button class="btn" onclick="nextScreen()">Начать приключение!</button>
+        </div>
+
+        <!-- Экран 2: Первая загадка -->
+        <div class="screen" id="screen2">
+            <div class="progress">
+                <div class="progress-bar" style="width: 25%;"></div>
+            </div>
+            <h2>Загадка №1</h2>
+            <p>🌹 В каком месяце мы впервые встретились?</p>
+            <div class="input-group">
+                <input type="text" id="answer1" placeholder="Введи название месяца">
+            </div>
+            <button class="btn" onclick="checkAnswer(1)">Ответить</button>
+            <div id="error1" class="error"></div>
+        </div>
+
+        <!-- Экран 3: Вторая загадка -->
+        <div class="screen" id="screen3">
+            <div class="progress">
+                <div class="progress-bar" style="width: 50%;"></div>
+            </div>
+            <h2>Загадка №2</h2>
+            <p>💑 Как я тебя ласково называю дома?</p>
+            <div class="input-group">
+                <input type="text" id="answer2" placeholder="Мое любимое прозвище для тебя">
+            </div>
+            <button class="btn" onclick="checkAnswer(2)">Ответить</button>
+            <div id="error2" class="error"></div>
+        </div>
+
+        <!-- Экран 4: Третья загадка -->
+        <div class="screen" id="screen4">
+            <div class="progress">
+                <div class="progress-bar" style="width: 75%;"></div>
+            </div>
+            <h2>Загадка №3</h2>
+            <p>🍰 Какой твой любимый вкус торта?</p>
+            <div class="input-group">
+                <input type="text" id="answer3" placeholder="Твой любимый вкус">
+            </div>
+            <button class="btn" onclick="checkAnswer(3)">Ответить</button>
+            <div id="error3" class="error"></div>
+        </div>
+
+        <!-- Экран 5: Поздравление -->
+        <div class="screen" id="screen5">
+            <div class="progress">
+                <div class="progress-bar" style="width: 100%;"></div>
+            </div>
+            <div class="photo-placeholder">❤️</div>
+            <h1>Поздравляю!</h1>
+            <div class="message-card">
+                <p>Моя любимая, дорогая жена!</p>
+                <p>В этот особенный день я хочу сказать тебе, как сильно я тебя люблю. Ты делаешь каждый мой день ярче и наполняешь жизнь смыслом.</p>
+                <p>Желаю тебе здоровья, счастья, исполнения всех мечтаний и чтобы твоя улыбка никогда не покидала твое прекрасное лицо!</p>
+                <p>С любовью, твой муж 💕</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Настройки для квеста (ИЗМЕНИ ЭТИ ОТВЕТЫ!)
+        const answers = {
+            1: "май", // Месяц знакомства
+            2: "солнышко", // Ласковое прозвище
+            3: "шоколадный" // Любимый вкус торта
+        };
+
+        let currentScreen = 1;
+
+        function nextScreen() {
+            document.getElementById(`screen${currentScreen}`).classList.remove('active');
+            currentScreen++;
+            document.getElementById(`screen${currentScreen}`).classList.add('active');
+        }
+
+        function checkAnswer(questionNumber) {
+            const userAnswer = document.getElementById(`answer${questionNumber}`).value.toLowerCase().trim();
+            const correctAnswer = answers[questionNumber].toLowerCase();
+            const errorElement = document.getElementById(`error${questionNumber}`);
+
+            if (userAnswer === correctAnswer) {
+                errorElement.textContent = "";
+                errorElement.className = "success";
+                errorElement.textContent = "Правильно! ❤️";
+                
+                setTimeout(() => {
+                    if (questionNumber === 3) {
+                        // Последний вопрос - запускаем конфетти
+                        createConfetti();
+                    }
+                    nextScreen();
+                }, 1500);
+            } else {
+                errorElement.className = "error";
+                errorElement.textContent = "Попробуй еще раз 😊";
+                
+                // Небольшое встряхивание поля ввода
+                const input = document.getElementById(`answer${questionNumber}`);
+                input.style.animation = "shake 0.5s";
+                setTimeout(() => {
+                    input.style.animation = "";
+                }, 500);
+            }
+        }
+
+        // Анимация сердечек
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 3 + 's';
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+
+        // Конфетти для финала
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        // Добавляем анимацию встряхивания
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Запускаем сердечки каждые 2 секунды
+        setInterval(createHeart, 2000);
+
+        // Обработка Enter для ответов
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const currentInput = document.activeElement;
+                if (currentInput.type === 'text') {
+                    const questionNumber = currentInput.id.replace('answer', '');
+                    checkAnswer(parseInt(questionNumber));
+                }
+            }
+        });
+    </script>
+</body>
+</html>
