@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,92 +171,110 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
-        .photo-placeholder {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(45deg, #74b9ff, #0984e3);
-            border-radius: 50%;
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3em;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .photo-gallery {
+        .slideshow-container {
             margin: 20px 0;
+            text-align: center;
         }
 
-        .main-photo {
+        .slideshow-photo {
+            position: relative;
             margin-bottom: 15px;
         }
 
-        .main-photo img {
-            width: 200px;
-            height: 200px;
+        .slideshow-photo img {
+            width: 300px;
+            height: 300px;
             border-radius: 15px;
             object-fit: cover;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
+            transition: all 0.5s ease;
         }
 
-        .main-photo img:hover {
-            transform: scale(1.05);
-        }
-
-        .photo-thumbnails {
+        .slideshow-controls {
             display: flex;
-            gap: 10px;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
         }
 
-        .photo-btn {
+        .slideshow-btn {
             background: linear-gradient(45deg, #74b9ff, #0984e3);
-            color: white;
-            border: none;
             padding: 8px 15px;
-            border-radius: 15px;
             font-size: 0.9em;
+        }
+
+        .photo-counter {
+            background: rgba(0,0,0,0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .slideshow-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .photo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+        .indicator.active {
+            background: #ff6b6b;
+            transform: scale(1.2);
         }
 
-        .photo-btn.active {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        .indicator:hover {
+            background: #74b9ff;
         }
 
         .video-section {
             margin-top: 25px;
-            padding: 20px;
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
-            border-radius: 15px;
-        }
-
-        .video-section h3 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .video-container {
-            position: relative;
         }
 
         .video-btn {
             background: linear-gradient(45deg, #e17055, #d63031);
             font-size: 1.2em;
-            padding: 12px 25px;
+            padding: 15px 30px;
         }
 
-        .video-btn:hover {
-            background: linear-gradient(45deg, #d63031, #b71c1c);
+        .photo-status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .photo-status.loading {
+            display: block;
+        }
+
+        .photo-status.error {
+            display: block;
+            background: rgba(231, 76, 60, 0.9);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confetti-fall 3s linear infinite;
         }
 
         @keyframes confetti-fall {
@@ -336,7 +354,7 @@
         <!-- Екран 5: Четверта загадка -->
         <div class="screen" id="screen5">
             <div class="progress">
-                <div class="progress-bar" style="width: 90%;"></div>
+                <div class="progress-bar" style="width: 75%;"></div>
             </div>
             <h2>Загадка №4</h2>
             <p>🍰 Який твій улюблений смак торта?</p>
@@ -347,33 +365,63 @@
             <div id="error4" class="error"></div>
         </div>
 
-        <!-- Екран 6: Привітання -->
+        <!-- Екран 6: Слайд-шоу фотографій -->
         <div class="screen" id="screen6">
+            <div class="progress">
+                <div class="progress-bar" style="width: 90%;"></div>
+            </div>
+            <h2>Наші спогади ❤️</h2>
+            
+            <div class="slideshow-container">
+                <div class="slideshow-photo">
+                    <img id="slideshowImage" src="" alt="Наші фото" onerror="handleSlideshowError(this)" />
+                    <div id="slideshow-status" class="photo-status">Завантажуємо фото...</div>
+                </div>
+                
+                <div class="slideshow-controls">
+                    <button class="btn slideshow-btn" onclick="prevPhoto()">← Попереднє</button>
+                    <div class="photo-counter">
+                        <span id="current-photo">1</span> / <span id="total-photos">3</span>
+                    </div>
+                    <button class="btn slideshow-btn" onclick="nextPhoto()">Наступне →</button>
+                </div>
+                
+                <div class="slideshow-indicators">
+                    <span class="indicator active" onclick="goToPhoto(0)"></span>
+                    <span class="indicator" onclick="goToPhoto(1)"></span>
+                    <span class="indicator" onclick="goToPhoto(2)"></span>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="nextScreen()" style="margin-top: 20px;">Далі до привітання 💕</button>
+        </div>
+
+        <!-- Екран 7: Привітання -->
+        <div class="screen" id="screen7">
             <div class="progress">
                 <div class="progress-bar" style="width: 100%;"></div>
             </div>
             <h1>🎉 З Днем Народження, кохана! 🎉</h1>
             
-            <!-- Галерея фотографій -->
-            <div class="photo-gallery">
-                <div class="main-photo">
-                    <img id="currentPhoto" src="" alt="Наше фото" onerror="handleImageError(this)" onload="handleImageLoad(this)" />
-                    <div id="photo-status" class="photo-status">Завантажуємо фото...</div>
-                </div>
-                <div class="photo-thumbnails">
-                    <button class="photo-btn active" onclick="showPhoto(1)">Фото 1</button>
-                    <button class="photo-btn" onclick="showPhoto(2)">Фото 2</button>
-                    <button class="photo-btn" onclick="showPhoto(3)">Фото 3</button>
-                </div>
-            </div>
-
             <div class="message-card">
                 <p>Я тебе кохаю та хочу, щоб наше МИ звучало довго, потужно та щасливо! 💕</p>
             </div>
 
             <!-- Відео привітання -->
             <div class="video-section">
-                <button class="btn video-btn" onclick="openVideo()">🎬 Подивитися відео-привітання</button>
+                <button class="btn video-btn" onclick="playVideo()">🎬 Подивитися відео-привітання</button>
+                
+                <!-- Вбудований відео плеєр (спочатку прихований) -->
+                <div id="video-container" style="display: none; margin-top: 20px;">
+                    <video id="video-player" width="100%" height="300" controls style="border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                        <source src="./video1.mp4" type="video/mp4">
+                        <source src="./video1.mov" type="video/quicktime">
+                        <source src="./video1.webm" type="video/webm">
+                        Ваш браузер не підтримує відео.
+                    </video>
+                    <br>
+                    <button class="btn" onclick="hideVideo()" style="margin-top: 10px; background: #6c757d;">Закрити відео</button>
+                </div>
             </div>
         </div>
     </div>
@@ -387,23 +435,17 @@
             4: "шоколадний" // Улюблений смак торта
         };
 
-        // Альтернативные ссылки для фото (если Google Drive не работает)
-        const photos = {
-            1: "https://drive.google.com/uc?id=14QQpkcq9kTkgA3iy8MwoHi_1ldVcApG0&export=view",
-            2: "https://drive.google.com/uc?id=1qDmolV8BA9YDZzvIQnOfKpO4RSfkZg39&export=view",
-            3: "https://drive.google.com/uc?id=1wv6C5GCgkufT2_z_FUBCXap-UjzlUJ4k&export=view"
-        };
+        // Ваші фотографії та відео з GitHub
+        const photos = [
+            "./photo1.jpg",
+            "./photo2.jpg", 
+            "./photo3.jpg"
+        ];
 
-        // Запасні зображення (якщо Google Drive не працює)
-        const fallbackPhotos = {
-            1: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ff69b4'/%3E%3Ctext x='100' y='90' text-anchor='middle' dy='.3em' font-family='Arial' font-size='20' fill='white'%3E💕%3C/text%3E%3Ctext x='100' y='120' text-anchor='middle' dy='.3em' font-family='Arial' font-size='14' fill='white'%3EНаше фото 1%3C/text%3E%3C/svg%3E",
-            2: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%2374b9ff'/%3E%3Ctext x='100' y='90' text-anchor='middle' dy='.3em' font-family='Arial' font-size='20' fill='white'%3E❤️%3C/text%3E%3Ctext x='100' y='120' text-anchor='middle' dy='.3em' font-family='Arial' font-size='14' fill='white'%3EНаше фото 2%3C/text%3E%3C/svg%3E",
-            3: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%2300b894'/%3E%3Ctext x='100' y='90' text-anchor='middle' dy='.3em' font-family='Arial' font-size='20' fill='white'%3E💖%3C/text%3E%3Ctext x='100' y='120' text-anchor='middle' dy='.3em' font-family='Arial' font-size='14' fill='white'%3EНаше фото 3%3C/text%3E%3C/svg%3E"
-        };
+        // Відео з GitHub
+        const videoUrl = "./video1.mp4"; // или ./video1.mov, в зависимости от формата
 
-        // Ссылка на видео (замените на вашу)
-        const videoUrl = "https://ru.files.fm/u/pw4hx54yhs";
-
+        let currentPhotoIndex = 0;
         let currentScreen = 1;
 
         function nextScreen() {
@@ -411,49 +453,96 @@
             currentScreen++;
             document.getElementById(`screen${currentScreen}`).classList.add('active');
             
-            // Показати перше фото при переході до фінального екрана
+            // Запустити слайд-шоу при переході до екрана 6
             if (currentScreen === 6) {
-                showPhoto(1);
+                startSlideshow();
             }
         }
 
-        function showPhoto(photoNumber) {
-            const img = document.getElementById('currentPhoto');
-            const status = document.getElementById('photo-status');
+        function startSlideshow() {
+            currentPhotoIndex = 0;
+            showSlideshowPhoto();
+            document.getElementById('total-photos').textContent = photos.length;
+        }
+
+        function showSlideshowPhoto() {
+            const img = document.getElementById('slideshowImage');
+            const status = document.getElementById('slideshow-status');
+            const currentCounter = document.getElementById('current-photo');
             
-            // Показати індикатор завантаження
+            // Оновити лічильник
+            currentCounter.textContent = currentPhotoIndex + 1;
+            
+            // Оновити індикатори
+            document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentPhotoIndex);
+            });
+            
+            // Показати статус завантаження
             status.textContent = 'Завантажуємо фото...';
             status.className = 'photo-status loading';
             
-            // Встановити зображення
-            img.src = photos[photoNumber];
-            
-            // Оновити активну кнопку
-            document.querySelectorAll('.photo-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.photo-btn')[photoNumber - 1].classList.add('active');
+            // Завантажити фото з Google Drive
+            img.src = photos[currentPhotoIndex];
         }
 
-        function handleImageLoad(img) {
-            const status = document.getElementById('photo-status');
-            status.style.display = 'none';
+        function nextPhoto() {
+            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+            showSlideshowPhoto();
         }
 
-        function handleImageError(img) {
-            const status = document.getElementById('photo-status');
-            const photoNumber = document.querySelector('.photo-btn.active') ? 
-                Array.from(document.querySelectorAll('.photo-btn')).findIndex(btn => btn.classList.contains('active')) + 1 : 1;
+        function prevPhoto() {
+            currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+            showSlideshowPhoto();
+        }
+
+        function goToPhoto(index) {
+            currentPhotoIndex = index;
+            showSlideshowPhoto();
+        }
+
+        function handleSlideshowError(img) {
+            const status = document.getElementById('slideshow-status');
             
-            // Спробувати завантажити запасне зображення
-            status.textContent = 'Фото недоступне, показуємо заглушку';
+            // Если фото не загрузилось, показать сообщение
+            status.textContent = 'Фото завантажується...';
             status.className = 'photo-status error';
             
             setTimeout(() => {
-                img.src = fallbackPhotos[photoNumber];
                 status.style.display = 'none';
             }, 2000);
         }
 
+        function playVideo() {
+            const videoContainer = document.getElementById('video-container');
+            const videoPlayer = document.getElementById('video-player');
+            
+            // Показати відео плеєр
+            videoContainer.style.display = 'block';
+            
+            // Прокрутити до відео
+            videoContainer.scrollIntoView({ behavior: 'smooth' });
+            
+            // Автоматично почати відтворення
+            videoPlayer.play().catch(e => {
+                console.log('Автовідтворення заблоковано браузером');
+            });
+        }
+
+        function hideVideo() {
+            const videoContainer = document.getElementById('video-container');
+            const videoPlayer = document.getElementById('video-player');
+            
+            // Зупинити відео
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+            
+            // Сховати плеєр
+            videoContainer.style.display = 'none';
+        }
+
         function openVideo() {
+            // Запасний варіант - відкрити у новій вкладці
             window.open(videoUrl, '_blank');
         }
 
@@ -542,6 +631,22 @@
                     const questionNumber = currentInput.id.replace('answer', '');
                     checkAnswer(parseInt(questionNumber));
                 }
+            }
+        });
+
+        // Обработчик для загрузки фото в слайд-шоу
+        document.addEventListener('DOMContentLoaded', function() {
+            const slideshowImg = document.getElementById('slideshowImage');
+            if (slideshowImg) {
+                slideshowImg.addEventListener('load', function() {
+                    const status = document.getElementById('slideshow-status');
+                    if (status) status.style.display = 'none';
+                });
+                
+                slideshowImg.addEventListener('error', function() {
+                    // Если Google Drive фото не загрузилось, показать заглушку
+                    handleSlideshowError(this);
+                });
             }
         });
     </script>
