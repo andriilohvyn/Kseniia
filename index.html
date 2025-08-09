@@ -354,7 +354,7 @@
         <!-- Екран 5: Четверта загадка -->
         <div class="screen" id="screen5">
             <div class="progress">
-                <div class="progress-bar" style="width: 75%;"></div>
+                <div class="progress-bar" style="width: 85%;"></div>
             </div>
             <h2>Загадка №4</h2>
             <p>🍰 Який твій улюблений смак торта?</p>
@@ -368,7 +368,7 @@
         <!-- Екран 6: Слайд-шоу фотографій -->
         <div class="screen" id="screen6">
             <div class="progress">
-                <div class="progress-bar" style="width: 90%;"></div>
+                <div class="progress-bar" style="width: 95%;"></div>
             </div>
             <h2>Наші спогади ❤️</h2>
             
@@ -411,7 +411,7 @@
             <div class="video-section">
                 <button class="btn video-btn" onclick="playVideo()">🎬 Подивитися відео-привітання</button>
                 
-                <!-- Вбудований відео плеєр (спочатку прихований) -->
+                <!-- Вбудований відео плеєр -->
                 <div id="video-container" style="display: none; margin-top: 20px;">
                     <video id="video-player" width="100%" height="300" controls style="border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
                         <source src="./video1.mp4" type="video/mp4">
@@ -435,15 +435,12 @@
             4: "шоколадний" // Улюблений смак торта
         };
 
-        // Ваші фотографії та відео з GitHub
+        // Ваші фотографії з GitHub
         const photos = [
             "./photo1.jpg",
             "./photo2.jpg", 
             "./photo3.jpg"
         ];
-
-        // Відео з GitHub
-        const videoUrl = "./video1.mp4"; // или ./video1.mov, в зависимости от формата
 
         let currentPhotoIndex = 0;
         let currentScreen = 1;
@@ -482,7 +479,7 @@
             status.textContent = 'Завантажуємо фото...';
             status.className = 'photo-status loading';
             
-            // Завантажити фото з Google Drive
+            // Завантажити фото з GitHub
             img.src = photos[currentPhotoIndex];
         }
 
@@ -504,7 +501,7 @@
         function handleSlideshowError(img) {
             const status = document.getElementById('slideshow-status');
             
-            // Если фото не загрузилось, показать сообщение
+            // Если фото не загрузилось с GitHub
             status.textContent = 'Фото завантажується...';
             status.className = 'photo-status error';
             
@@ -539,11 +536,6 @@
             
             // Сховати плеєр
             videoContainer.style.display = 'none';
-        }
-
-        function openVideo() {
-            // Запасний варіант - відкрити у новій вкладці
-            window.open(videoUrl, '_blank');
         }
 
         function checkAnswer(questionNumber) {
@@ -644,7 +636,6 @@
                 });
                 
                 slideshowImg.addEventListener('error', function() {
-                    // Если Google Drive фото не загрузилось, показать заглушку
                     handleSlideshowError(this);
                 });
             }
